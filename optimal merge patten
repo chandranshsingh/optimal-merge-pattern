@@ -1,0 +1,113 @@
+OPTIMAL MERGE PATTERN
+1.	Introduction
+2.	Problem
+3.	PROCEDURE
+4.	ExamplE
+5.	CODE
+
+Introduction-If you have n sorted sorted files and you want to merge them in such a way ,that minimum comparision are required .so we you optimal merge pattern. In this merge two files having of less weightage and merge into a single one and arrange them in a ascending order in array.this process continue till the last merging. 
+
+
+2.Problem
+➢Given n sorted files, find an optimal way (i.e., requiring the fewest
+comparisons or record moves) to pairwise merge them into one sorted list
+➢It fits ordering paradigm
+❖Example
+➢Three sorted files (x1,x2,x3) with lengths (30, 20, 10)
+
+➢Solution 1: merging x1 and x2
+
+(50 record moves), merging the result with x3
+
+(60 moves) → total 110 moves
+➢Solution 2: merging x2 and x3
+
+(30 moves), merging the result with x1
+(60 moves) → total 90 moves
+➢The solution 2 is better
+3.PROCEDURE
+Procedure for Constructing Optimal Merge Tree
+❖Step1: Construct a binary tree, in binary tree all the leaf nodes are
+represented as squares(inputs), all the internal nodes are
+represented as circles(mergers)
+❖Step2: Arrange all the files in ascending order based on the number
+of records.
+❖Step3: Identify the two smallest size files, and merge these two files.
+Insert a merged file in the sorted list at its correct position in the list.
+❖Step4: Repeat step 3 until a binary tree is formed with minimum
+number of mergers or comparision.
+❖A greedy method (for 2-way merge problem)
+➢At each step, merge the two smallest files
+➢e.g., five files with lengths (20,30,10,5,30)
+
+➢Total number of record moves = weighted external path length
+
+➢The optimal 2-way merge pattern = binary merge tree with minimum weighted external path length.
+4.ExamplE
+L={10,20,30,50}
+F={F1,F2,F3,F4}
+FI=10
+F2=20
+F3=30
+F4=40
+1.AFTER MERGING F1 AND F2 WE GET F5 .AND ARRANGE THEM IN ARRAY IN ASSENDING ORDER.
+ 
+OVER ARRAY WILL BE={F3,F5,F4}
+
+1.AFTER MERGING F3 AND F5 WE GET F6 .AND ARRANGE THEM IN ARRAY IN ASSENDING ORDER.
+
+ 
+OVER ARRAY WILL BE={F4,F6,}
+
+1.AFTER MERGING F4 AND F6 WE GET F7.AND ARRANGE THEM IN ARRAY IN ASSENDING ORDER.
+
+ 
+OVER ARRAY WILL BE={F7}
+
+4.Code-
+#include <bits/stdc++.h>
+using namespace std;
+int minComputation(int size, int files[])
+{
+	priority_queue<int, vector<int>, greater<int> > pq;
+
+	for (int i = 0; i < size; i++) {
+		pq.push(files[i]);
+	}
+	int count = 0;
+	while (pq.size() > 1) {
+		int first_smallest = pq.top();
+		pq.pop();
+		int second_smallest = pq.top();
+		pq.pop();
+
+		int temp = first_smallest + second_smallest;
+		count += temp;
+		pq.push(temp);
+	}
+	return count;
+}
+
+int main(){
+	int n = 6;
+	int files[] = { 2, 3, 4, 5, 6, 7 };
+	cout << "Minimum Computations = "
+		<< minComputation(n, files);
+
+	return 0;}
+5.Complexity- T= O (n-1) * max (O (find minimum), O (cost for insertion in L)). 
+1.	Case 1 L is not sorted.
+2.	O (find minimum)= O (n).
+3.	we can use first 2 pass of selection sort will give first two minimum which require 2n cost.(O(n)) O (cost for insertion in L)= O (1).
+4.	L is not sorted so we can insert in last in array. Time complexity :T= O (n2)
+2 Case 2 L is sorted.
+Case 2.1
+O (find minimum ) = O (1)
+ because L is sorted we get 2 minimum in fist two place. O (cost for insertion in L)= O (n) 
+L is sorted so after merge new file will be added to specific location so that the L remain sorted. 
+Time complexity: T= O (n2 )
+         Case 2.2
+               L is represented as a min-heap. Value in the root is less then or equal to the values of its children. O (find minimum)= O (log n)
+             cost for deletion of minimum in min heap O (cost for insertion in L)= O (log n)--cost for insertion of minimum in min heap 
+              Time complexity: T= O (n log n).
+
